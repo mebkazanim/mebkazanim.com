@@ -1,0 +1,111 @@
+    <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+
+<script>
+String.prototype.repeat = function(num) {
+	return new Array(num + 1).join(this);
+}
+var ToC =
+	"<nav role='navigation' class='table-of-contents'>" +
+		"<h2>İçindekiler:</h2>" +
+		"<ul>";
+
+var newLine, el, title, link, level, baseLevel;
+
+$("article section h3, article section div div h4, article section h5, article section h6").each(function() {
+
+	el = $(this);
+	title = el.text();
+	link = "#" + el.attr("id");
+ 
+	var prevLevel = level || 0;
+	level = this.nodeName.substr(1);
+	if(!baseLevel) { // make sure you start with highest level of heading or it won't work
+		baseLevel = level;
+	}
+    
+ 
+	if(prevLevel == 0) {
+		newLine = '<li>';
+	} else if(level == prevLevel) {
+		newLine = '</li><li>';
+	} else if(level > prevLevel) {
+		newLine = '<ul><li>'.repeat(level - prevLevel);
+	} else if(level < prevLevel) {
+		newLine = '</li></ul>'.repeat(prevLevel - level) +
+		'</li><li>';
+	}
+	newLine += "<a href='" + link + "'>" + title + "</a>";
+
+	ToC += newLine;
+
+});
+
+ToC += '</li></ul>'.repeat(level - baseLevel) +
+			"</li>" +
+		"</ul>" +
+	"</nav>";
+
+$(".all-questions").prepend(ToC);
+</script>

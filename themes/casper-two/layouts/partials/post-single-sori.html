@@ -1,0 +1,41 @@
+<article class="post-full post"> 
+    <header class="post-full-header">
+        <section class="post-full-meta">
+            <time class="post-full-meta-date" datetime="{{.Date.Format "2006-01-02"}}">
+{{ .Date.Day }} {{ index $.Site.Data.mois (printf "%d" .Date.Month) }} {{ .Date.Year }}
+            </time>{{if .Params.etiket }}
+                <span class="date-divider">/</span> {{ range $index, $tag := .Params.etiket }}{{if lt $index 2}}<a href="{{$.Site.BaseURL}}etiket/{{ $tag | urlize }}/">#{{$tag}}</a>&nbsp;{{end}}{{end}}{{ end }}
+        </section>
+        <h1 class="post-full-title">{{.Title}}</h1>
+    </header>
+    {{if .Params.image}}
+    <figure class="post-full-image" style="background-image: url({{.Params.image | absURL}})">
+    </figure>{{else}}
+    <figure class="post-full-image" style="background-image: url({{$.Site.BaseURL}}defimg/{{ index (seq 7 | shuffle) 0 }}.jpg)">
+    </figure>{{end}}
+    <section class="post-full-content">
+        <div class="all-questions">
+        <div class="kg-card-markdown">
+              
+        {{ .Content }}    
+        </div>
+    </section>
+    <footer class="post-full-footer">
+      <section class="author-card">
+        <img class="author-profile-img" src="{{ if isset .Params "author" }}{{ $author := index .Site.Data.authors .Params.author }}{{ $author.image }}{{ end }}" alt="Author" />
+        <section class="author-card-content">
+            <h4 class="author-card-name"><a href="/yazar/{{.Params.author}} ">
+               {{ if isset .Params "author" }}
+    {{ $author := index .Site.Data.authors .Params.author }}
+            {{ $author.name }}{{ end }}
+               
+               </a></h4>
+                <p>{{ if isset .Params "author" }}
+    {{ $author := index .Site.Data.authors .Params.author }}
+            {{ $author.bio }}  {{ end }}</p>
+                <br>              
+                <div>
+        </section>
+      </section>
+    </footer>
+</article>

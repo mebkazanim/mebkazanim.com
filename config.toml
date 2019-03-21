@@ -1,0 +1,42 @@
+baseurl = "/"
+disqusShortname = "mebkazanim"
+languageCode = "tr-TR"
+paginate = 6
+theme = "casper-two"
+[[menu.main]]
+name = "Haberler"
+url = "/haber/"
+weight = 101
+[[menu.main]]
+name = "Kategoriler"
+url = "/kategori/"
+weight = 100
+[[menu.main]]
+name = "Yazarlar"
+url = "/yazarlar/"
+weight = 99
+[params]
+RSSLink = ""
+cover = "img/blog-cover.jpg"
+customCSS = []
+description = "Eğitim hakkında görüşlerimizi fikirlerimizi sunacağız"
+fbName = ""
+githubName = ""
+googleAnalytics = "UA-122967892-1"
+logo = "mebkazanim-logo.png"
+logoicon = "mebkazanim-icon.png"
+logonav = "mebkazanim-nav.png"
+metaDescription = ""
+orgDescription = "Tüm Hakları Saklıdır."
+orgName = "Meb Kazanım 2018"
+orgWebsite = "https://www.mebkazanim.com/"
+pageNotFoundTitle = "404 Not Found - Sayfa Bulunamadı"
+singleViewStyle = "casper"
+subtitle = "Eğitimi Sorgulayan Blog"
+title = "Meb Kazanım"
+twitterName = ""
+[permalinks]
+post = "/:slug/"
+[taxonomies]
+categories = "kategori"
+tags = "etiket"
